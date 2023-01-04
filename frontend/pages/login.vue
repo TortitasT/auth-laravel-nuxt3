@@ -1,34 +1,38 @@
 <template>
-  <div>
-    <form @submit.prevent="login">
-      <h2>Login</h2>
+  <form class="panel" @submit.prevent="login">
+    <header>
+      <h1>Login</h1>
+    </header>
 
-      <input type="text" name="email">
-      <input type="text" name="password">
+    <div class="panel__content">
+      <InputField type="text" label="Email" name="email" id-override="email" />
+      <InputField
+        type="password"
+        label="Password"
+        name="password"
+        id-override="password"
+      />
+    </div>
 
+    <div class="panel__controls">
+      <NuxtLink class="button" to="/">Back</NuxtLink>
       <button type="submit">Submit</button>
-    </form>
-
-    <p>
-      {{ useAuthStore().user }}
-    </p>
-
-    <NuxtLink to="/">Back</NuxtLink>
-  </div>
+    </div>
+  </form>
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '#imports'
+import { useAuthStore } from "#imports";
 
 const login = async (event: Event) => {
-  const formData = new FormData(event.target as HTMLFormElement)
-  const email = formData.get('email')?.toString() || ''
-  const password = formData.get('password')?.toString() || ''
+  const formData = new FormData(event.target as HTMLFormElement);
+  const email = formData.get("email")?.toString() || "";
+  const password = formData.get("password")?.toString() || "";
 
-  const test = await auth.login({
+  const test = await Auth.login({
     email,
-    password
-  })
-}
+    password,
+  });
+};
 </script>
 

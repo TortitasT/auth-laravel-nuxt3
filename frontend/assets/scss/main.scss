@@ -1,0 +1,28 @@
+:root {
+  --font-family: 'Open Sans', sans-serif;
+
+  --border-radius: 2px;
+
+  --green: #8aff8a;
+  --red: #ff6464;
+
+  --fg-color: #0f0e17;
+  --bg-color: #fff;
+  --accent-color: #5454ff;
+}
+
+@import 'components/panel';
+@import 'components/text';
+
+@import 'html/button';
+@import 'html/input';
+
+body {
+  font-family: var(--font-family);
+  color: var(--fg-color);
+
+  label {
+    font-family: var(--font-family);
+    color: var(--fg-color);
+  }
+}

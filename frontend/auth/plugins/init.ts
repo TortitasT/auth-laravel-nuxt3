@@ -1,11 +1,8 @@
 import { defineNuxtPlugin } from "#app";
-import { useAuthStore } from "../store/auth";
+import { useAuthStore } from "#imports";
+import fs from "fs";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  console.log("init.ts");
-
-  console.log(nuxtApp);
-
   if (process.server) {
     await server();
     return;
@@ -16,20 +13,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 });
 
 async function server() {
-  // ..
-  // await useAuthStore().updateUser();
-  await $fetch("http://localhost:8000/sanctum/csrf-cookie", {
-    method: "GET",
-    credentials: "include",
-  });
-
-  const { data, error }: any = await $fetch("http://localhost:8000/api/user", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "accept": "application/json",
-    },
-  });
+  // TODO: update user here instead of in mount, need to learn more about laravel and nuxt3
+  await useAuthStore().updateUser();
 }
 
 async function client() {
