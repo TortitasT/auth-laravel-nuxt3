@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/store/auth";
+import { useAuthStore } from "../store/auth";
 
 export default class {
   public static async login(
@@ -30,10 +30,35 @@ export default class {
   }
 
   public static async user(): Promise<any> {
-    const { data } = await useFetch("http://localhost:8000/api/user", {
+    useFetch("http://localhost:8000/sanctum/csrf-cookie", {
       method: "GET",
       credentials: "include",
     });
+
+    const params = {
+      method: "GET",
+      credentials: "include",
+    } as any;
+
+    if (process.server) {
+      params.headers = useRequestHeaders([
+        "cookie",
+        "x-xsrf-token",
+      ]);
+
+      params.headers["accept"] = "application/json";
+
+      // console.log("params", params);
+    }
+
+    const { data, error } = await useFetch(
+      "http://localhost:8000/api/user",
+      params,
+    );
+
+    if (error) {
+      console.log("error", error.value);
+    }
 
     return data;
   }

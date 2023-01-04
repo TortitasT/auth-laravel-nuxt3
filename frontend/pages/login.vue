@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '#imports'
 
 const login = async (event: Event) => {
   const formData = new FormData(event.target as HTMLFormElement)

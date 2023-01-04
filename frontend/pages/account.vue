@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '#imports'
 
-definePageMeta({ middleware: ["auth"] })
+definePageMeta({ middleware: ["middleware-auth"] })
 
 const logout = async () => {
   await auth.logout()
