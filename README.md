@@ -24,3 +24,21 @@ Develop:
 ```bash
 code auth-laravel-nuxt3.code-workspace
 ```
+
+# Utils
+## Commands
+Create user (can be run without arguments):
+```bash
+php backend/artisan auth:create-user [--name=NAME] [--email=EMAIL] [--password=PASSWORD]
+```
+
+Create [test user](?plain=40) and a bunch of random users:
+```bash
+php backend/artisan db:seed --class=DemoUserSeeder
+```
+```json
+{
+  "email": "test@example.com",
+  "password": "password"
+}
+```
