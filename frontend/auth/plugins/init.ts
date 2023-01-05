@@ -1,6 +1,5 @@
 import { defineNuxtPlugin } from "#app";
 import { useAuthStore } from "#imports";
-import fs from "fs";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {

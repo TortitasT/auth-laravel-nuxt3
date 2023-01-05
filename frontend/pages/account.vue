@@ -10,7 +10,7 @@
           src="https://source.boringavatars.com/beam/120?colors=264653,2a9d8f,e9c46a,f4a261,e76f51"
           alt="Avatar"
         />
-        <h2>{{ user.name }}</h2>
+        <h2>{{  user.name }}</h2>
       </div>
 
       <h3>{{ user.email }}</h3>
@@ -25,8 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "#imports";
-
 definePageMeta({ middleware: ["require-auth"] });
 
 const logout = async () => {

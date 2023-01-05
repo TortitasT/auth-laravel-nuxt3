@@ -1,25 +1,27 @@
 import { useAuthStore } from "#imports";
 
 // TODO: NOT WORKNG
-const config = useRuntimeConfig();
+// const config = useRuntimeConfig();
 
-const csfrEndpoint = config.public.auth.endpoints.csfr;
-const loginEndpoint = config.public.auth.endpoints.login;
-const userEndpoint = config.public.auth.endpoints.user;
-const logoutEndpoint = config.public.auth.endpoints.logout;
+// const csfrEndpoint = config.public.auth.endpoints.csfr;
+// const loginEndpoint = config.public.auth.endpoints.login;
+// const userEndpoint = config.public.auth.endpoints.user;
+// const logoutEndpoint = config.public.auth.endpoints.logout;
+
 export class Auth {
   public static async login(
     { email, password }: { email: string; password: string },
   ): Promise<unknown> {
-    $fetch(csfrEndpoint.url, {
-      method: csfrEndpoint.method,
+    $fetch("http://localhost:8000/sanctum/csrf-cookie", {
+      method: "GET",
       credentials: "include",
     });
 
-    const response = await $fetch(loginEndpoint.url, {
-      method: loginEndpoint.method,
+    const response = await $fetch("http://localhost:8000/login", {
+      method: "POST",
       credentials: "include",
       headers: {
+        "accept": "application/json",
         "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
       },
       body: { email, password },
@@ -44,16 +46,16 @@ export class Auth {
     }
 
     headers["accept"] = "application/json";
-    headers["referer"] = config.public.auth.referer;
+    headers["referer"] = "http://localhost:3000";
 
     const params = {
-      method: userEndpoint.method,
+      method: "GET",
       credentials: "include",
       headers,
     } as any;
 
     const response = await $fetch(
-      userEndpoint.url,
+      "http://localhost:8000/api/user",
       params,
     );
 
@@ -61,13 +63,13 @@ export class Auth {
   }
 
   public static async logout() {
-    $fetch(csfrEndpoint.url, {
-      method: csfrEndpoint.method,
+    $fetch("http://localhost:8000/sanctum/csrf-cookie", {
+      method: "GET",
       credentials: "include",
     });
 
-    await $fetch(logoutEndpoint.url, {
-      method: logoutEndpoint.method,
+    await $fetch("http://localhost:8000/logout", {
+      method: "POST",
       credentials: "include",
       headers: {
         "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
@@ -79,10 +81,6 @@ export class Auth {
     return navigateTo("/login");
   }
 }
-
-export const loggedIn = computed(() => {
-  return useAuthStore().user !== null;
-})
 
 export const user = computed(() => {
   return useAuthStore().user;

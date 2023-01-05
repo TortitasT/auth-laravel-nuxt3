@@ -1,9 +1,9 @@
 <template>
   <span
     class="logged-indicator text"
-    :class="{ 'text--green': loggedIn, 'text--red': !loggedIn }"
+    :class="{ 'text--green': !!user, 'text--red': !!!user }"
   >
-    {{ loggedIn ? "Logged in" : "Not logged in" }}
+    {{ !!user ? "Logged in" : "Not logged in" }}
   </span>
 </template>
 
