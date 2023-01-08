@@ -1,0 +1,22 @@
+button,
+.button {
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+
+  padding: 1em 2em;
+
+  font-size: medium;
+
+  font-weight: bold;
+
+  background-color: var(--fg-color);
+  color: var(--bg-color);
+
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+  &:hover {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    border-color: var(--fg-color);
+  }
+}

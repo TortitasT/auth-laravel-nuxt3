@@ -15,6 +15,11 @@ php backend/artisan key:generate
 ```
 !! Change .env database configuration
 
+Migrate database:
+```bash
+backend/artisan migrate
+```
+
 Run:
 ```bash
 bash start.sh

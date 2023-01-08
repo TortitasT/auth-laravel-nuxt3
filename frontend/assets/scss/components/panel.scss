@@ -1,0 +1,41 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+
+  max-width: 300px;
+
+  margin: auto;
+
+  padding: 0 1em;
+
+  &>div,
+  &>header {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &>header {
+    justify-content: space-between;
+  }
+
+  &__content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  &__controls {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

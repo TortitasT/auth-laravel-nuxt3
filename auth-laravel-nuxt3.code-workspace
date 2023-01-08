@@ -10,5 +10,9 @@
 			"path": "frontend"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"xsrf"
+		]
+	}
 }

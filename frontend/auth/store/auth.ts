@@ -12,9 +12,12 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async updateUser() {
-      const user = await auth.user();
-
-      this.user = user.value;
+      try {
+        const user = await Auth.user();
+        this.user = user;
+      } catch (error) {
+        this.user = null;
+      }
     },
   },
 });

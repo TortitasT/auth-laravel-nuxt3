@@ -1,0 +1,14 @@
+input,
+.input {
+  border-radius: var(--border-radius);
+  border: 2px solid var(--fg-color);
+
+  outline: 0px solid transparent;
+
+  // TRANSITION IN FIELD
+
+  &:focus {
+    border-color: transparent;
+    outline: 3px solid var(--accent-color);
+  }
+}
