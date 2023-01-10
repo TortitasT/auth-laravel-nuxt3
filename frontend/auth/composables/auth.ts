@@ -1,6 +1,6 @@
 import { useAuthStore } from "#imports";
 
-// TODO: NOT WORKNG
+// TODO: config
 // const config = useRuntimeConfig();
 
 // const csfrEndpoint = config.public.auth.endpoints.csfr;
