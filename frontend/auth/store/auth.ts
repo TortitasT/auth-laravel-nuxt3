@@ -13,7 +13,7 @@ export const useAuthStore = defineStore({
   actions: {
     async updateUser() {
       try {
-        const user = await Auth.user();
+        const user = await useAuth().user();
         this.user = user;
       } catch (error) {
         this.user = null;

@@ -1,11 +1,17 @@
 <template>
   <span
     class="logged-indicator text"
-    :class="{ 'text--green': !!user, 'text--red': !!!user }"
+    :class="{ 'text--green': isUserLoggedIn, 'text--red': !isUserLoggedIn }"
   >
-    {{ !!user ? "Logged in" : "Not logged in" }}
+    {{ !!isUserLoggedIn ? "Logged in" : "Not logged in" }}
   </span>
 </template>
+
+<script setup>
+
+const isUserLoggedIn = computed(() => !!useAuthStore().user);
+
+</script>
 
 <style lang="scss">
 .logged-indicator {

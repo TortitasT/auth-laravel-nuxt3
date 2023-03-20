@@ -1,87 +1,89 @@
 import { useAuthStore } from "#imports";
 
-// TODO: config
-// const config = useRuntimeConfig();
+export const useAuth = () => {
+  const config = useRuntimeConfig();
 
-// const csfrEndpoint = config.public.auth.endpoints.csfr;
-// const loginEndpoint = config.public.auth.endpoints.login;
-// const userEndpoint = config.public.auth.endpoints.user;
-// const logoutEndpoint = config.public.auth.endpoints.logout;
+  const csfrEndpoint = config.public.auth.endpoints.csfr;
+  const csfrEndpointUrl = config.public.auth.baseURL + csfrEndpoint.url;
 
-export class Auth {
-  public static async login(
-    { email, password }: { email: string; password: string },
-  ): Promise<unknown> {
-    $fetch("http://localhost:8000/sanctum/csrf-cookie", {
-      method: "GET",
-      credentials: "include",
-    });
+  const loginEndpoint = config.public.auth.endpoints.login;
+  const loginEndpointUrl = config.public.auth.baseURL + loginEndpoint.url;
 
-    const response = await $fetch("http://localhost:8000/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "accept": "application/json",
-        "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
-      },
-      body: { email, password },
-    });
+  const userEndpoint = config.public.auth.endpoints.user;
+  const userEndpointUrl = config.public.auth.baseURL + userEndpoint.url;
 
-    // if (response.error.value?.status === 401) {
-    //   throw new Error("Invalid credentials");
-    // } else if (response.error.value) {
-    //   throw new Error("Something went wrong");
-    // }
+  const logoutEndpoint = config.public.auth.endpoints.logout;
+  const logoutEndpointUrl = config.public.auth.baseURL + logoutEndpoint.url;
 
-    useAuthStore().updateUser();
+  const refererUrl = config.public.auth.referer;
 
-    return response;
-  }
+  const store = useAuthStore();
 
-  public static async user(): Promise<any> {
-    let headers: any = {};
+  return {
+    login: async (
+      { email, password }: { email: string; password: string },
+    ): Promise<unknown> => {
+      $fetch(csfrEndpointUrl, {
+        method: "GET",
+        credentials: "include",
+      });
 
-    if (process.server) {
-      headers = useRequestHeaders(["cookie", "user-agent"]);
+      const response = await $fetch(loginEndpointUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "accept": "application/json",
+          "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
+        },
+        body: { email, password },
+      });
+
+      store.updateUser();
+
+      return response;
+    },
+
+    user: async (): Promise<any> => {
+      let headers: any = {};
+
+      if (process.server) {
+        headers = useRequestHeaders(["cookie", "user-agent"]);
+      }
+
+      headers["accept"] = "application/json";
+      headers["referer"] = refererUrl;
+
+      const params = {
+        method: "GET",
+        credentials: "include",
+        headers,
+      } as any;
+
+      const response = await $fetch(
+        userEndpointUrl,
+        params,
+      );
+
+      return response;
+    },
+
+    logout: async () => {
+      $fetch(csfrEndpointUrl, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      await $fetch(logoutEndpointUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
+        },
+      });
+
+      await store.updateUser();
+
+      return navigateTo("/login");
     }
-
-    headers["accept"] = "application/json";
-    headers["referer"] = "http://localhost:3000";
-
-    const params = {
-      method: "GET",
-      credentials: "include",
-      headers,
-    } as any;
-
-    const response = await $fetch(
-      "http://localhost:8000/api/user",
-      params,
-    );
-
-    return response;
-  }
-
-  public static async logout() {
-    $fetch("http://localhost:8000/sanctum/csrf-cookie", {
-      method: "GET",
-      credentials: "include",
-    });
-
-    await $fetch("http://localhost:8000/logout", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "X-XSRF-TOKEN": useCookie("XSRF-TOKEN").value || "",
-      },
-    });
-
-    await useAuthStore().updateUser();
-
-    return navigateTo("/login");
   }
 }
-
-export const user = computed(() => {
-  return useAuthStore().user;
-})

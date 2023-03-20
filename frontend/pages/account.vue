@@ -28,6 +28,8 @@
 definePageMeta({ middleware: ["require-auth"] });
 
 const logout = async () => {
-  await Auth.logout();
+  await useAuth().logout();
 };
+
+const user = computed(() => useAuthStore().user);
 </script>

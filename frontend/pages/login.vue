@@ -22,14 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "#imports";
-
 const login = async (event: Event) => {
   const formData = new FormData(event.target as HTMLFormElement);
   const email = formData.get("email")?.toString() || "";
   const password = formData.get("password")?.toString() || "";
 
-  const test = await Auth.login({
+  const test = await useAuth().login({
     email,
     password,
   });
